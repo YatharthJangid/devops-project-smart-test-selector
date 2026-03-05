@@ -1,0 +1,34 @@
+name: Smart Test CI
+
+on:
+  pull_request:
+    branches: [ main ]
+  push:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # Needed for git diff
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run Smart Test Selector
+        run: |
+          if [ "${{ github.event_name }}" == "pull_request" ]; then
+            export BASE_COMMIT=${{ github.event.pull_request.base.sha }}
+            export CURRENT_COMMIT=${{ github.event.pull_request.head.sha }}
+          else
+            export BASE_COMMIT=${{ github.event.before }}
+            export CURRENT_COMMIT=${{ github.sha }}
+          fi
+          python src/main/smart_selector.py
