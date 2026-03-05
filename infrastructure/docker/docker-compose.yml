@@ -2,10 +2,12 @@ version: '3.8'
 
 services:
   smart-selector:
-    build: 
+    build:
       context: ../../
       dockerfile: infrastructure/docker/Dockerfile
     container_name: smart_test_selector
+    ports:
+      - "8000:8000"
     volumes:
       - ../../:/app
     environment:

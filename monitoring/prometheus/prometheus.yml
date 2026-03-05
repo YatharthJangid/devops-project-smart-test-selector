@@ -8,4 +8,4 @@ scrape_configs:
 
   - job_name: 'smart-test-selector'
     static_configs:
-      - targets: ['host.docker.internal:8000'] # Assuming we exposed a metrics port
+      - targets: ['smart-selector:8000'] 
