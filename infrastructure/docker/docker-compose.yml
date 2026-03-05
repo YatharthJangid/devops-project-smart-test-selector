@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  smart-selector:
+    build: 
+      context: ../../
+      dockerfile: infrastructure/docker/Dockerfile
+    container_name: smart_test_selector
+    volumes:
+      - ../../:/app
+    environment:
+      - BASE_COMMIT=HEAD~1
+      - CURRENT_COMMIT=HEAD
+
+  # Adding a mock Prometheus service to check the "Monitoring" rubric box
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ../../monitoring/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml

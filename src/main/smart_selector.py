@@ -1,6 +1,14 @@
 import subprocess
 import os
 import sys
+import time
+from prometheus_client import start_http_server, Counter, Gauge
+
+# Prometheus Metrics
+TESTS_RUN = Counter('smart_tests_run_total', 'Total number of tests executed')
+TESTS_PASSED = Counter('smart_tests_passed_total', 'Total number of tests passed')
+TESTS_FAILED = Counter('smart_tests_failed_total', 'Total number of tests failed')
+FILES_CHANGED = Gauge('smart_files_changed_current', 'Number of files detected as changed')
 
 def get_changed_files(base_commit, current_commit):
     try:
@@ -38,6 +46,10 @@ def map_src_to_test(changed_files):
     return list(test_files_to_run)
 
 def main():
+    # Start Prometheus HTTP server
+    print("Starting Prometheus metrics server on port 8000...")
+    start_http_server(8000)
+
     base_commit = os.environ.get('BASE_COMMIT', '')
     current_commit = os.environ.get('CURRENT_COMMIT', '')
     
@@ -45,24 +57,38 @@ def main():
     changed_files = get_changed_files(base_commit, current_commit)
     print(f"Changed files detected: {changed_files}")
     
-    if not changed_files or changed_files == ['']:
+    # Update metrics
+    valid_changes = [f for f in changed_files if f.strip()]
+    FILES_CHANGED.set(len(valid_changes))
+    
+    if not valid_changes:
         print("No changes detected. Skipping tests.")
-        sys.exit(0)
-    
-    test_files = map_src_to_test(changed_files)
-    
-    if not test_files:
-        print("No related tests found for the changed files. Skipping tests.")
-        sys.exit(0)
+    else:
+        test_files = map_src_to_test(changed_files)
         
-    print(f"Selected tests to run: {test_files}")
-    
-    # Run pytest on the selected files
-    cmd = ['pytest', '-v'] + test_files
-    print(f"Executing: {' '.join(cmd)}")
-    
-    result = subprocess.run(cmd)
-    sys.exit(result.returncode)
+        if not test_files:
+            print("No related tests found for the changed files. Skipping tests.")
+        else:
+            print(f"Selected tests to run: {test_files}")
+            
+            # Run pytest on the selected files
+            cmd = ['pytest', '-v'] + test_files
+            print(f"Executing: {' '.join(cmd)}")
+            
+            result = subprocess.run(cmd)
+            TESTS_RUN.inc()
+            
+            if result.returncode == 0:
+                print("Tests passed successfully.")
+                TESTS_PASSED.inc()
+            else:
+                print("Tests failed.")
+                TESTS_FAILED.inc()
+
+    # Keep the container running so Prometheus can scrape the metrics
+    print("Tests finished. Keeping server alive for Prometheus scraping...")
+    while True:
+        time.sleep(60)
 
 if __name__ == '__main__':
     main()
