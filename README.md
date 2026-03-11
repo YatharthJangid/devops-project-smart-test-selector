@@ -29,7 +29,8 @@ In large codebases, running the entire test suite for every small change wastes 
 | **Smart Test Mapping** | Maps `src/main/foo.py` → `src/test/test_foo.py` automatically |
 | **Flake8 Linting** | Runs PEP8 style checks on changed files (advisory, non-blocking) |
 | **Bandit Security Scan** | Scans changed files for security vulnerabilities (advisory) |
-| **Code Coverage** | Generates `coverage.xml` using `pytest-cov` |
+| **Code Coverage** | Generates `coverage.xml` and interactive `coverage_html/` web report |
+| **Test Results** | Generates standard `test-results.xml` (JUnit format) for CI/CD metrics |
 | **Prometheus Metrics** | Exposes live metrics at `http://localhost:8000/metrics` |
 | **Docker & Compose** | Fully containerized via `Dockerfile` + `docker-compose.yml` |
 | **CI/CD Pipeline** | GitHub Actions workflow runs automatically on push/PR |

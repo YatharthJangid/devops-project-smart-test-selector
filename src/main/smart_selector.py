@@ -113,8 +113,15 @@ def main():
             else:
                 print(f"Selected tests to run: {test_files}")
                 
-                # Run pytest on the selected files with coverage
-                cmd = [sys.executable, '-m', 'pytest', '-v', '--cov=src/main', '--cov-report=term-missing', '--cov-report=xml:coverage.xml'] + test_files
+                # Run pytest on the selected files with coverage and multiple reports
+                cmd = [
+                    sys.executable, '-m', 'pytest', '-v',
+                    '--cov=src/main',
+                    '--cov-report=term-missing',
+                    '--cov-report=xml:coverage.xml',
+                    '--cov-report=html:coverage_html',  # Beautiful HTML coverage report
+                    '--junitxml=test-results.xml'       # Standard test result format for CI/CD
+                ] + test_files
                 print(f"\nExecuting: {' '.join(cmd)}")
                 
                 result = subprocess.run(cmd)

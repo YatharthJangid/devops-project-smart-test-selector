@@ -15,5 +15,4 @@ def divide(a, b):
         raise ValueError("Cannot divide by zero")
     return a / b
 
-# Demo change to trigger smart selector
-# test coverage comment
+# test line to check

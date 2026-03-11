@@ -60,6 +60,7 @@ Step 3: bandit → Security scan (non-blocking warning)
 Step 4: Map src/main/X.py → src/test/test_X.py
     ↓
 Step 5: pytest --cov → Run selected tests with coverage
+    │   ↳ Outputs: coverage.xml, coverage_html/index.html, test-results.xml
     ↓
 Step 6: Prometheus → Expose metrics on :8000/metrics
 ```
