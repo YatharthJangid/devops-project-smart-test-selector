@@ -23,21 +23,29 @@ You will demonstrate two modes:
 ```bash
 docker-compose -f infrastructure/docker/docker-compose.yml up --build -d
 ```
-*Wait 5-10 seconds for the containers to spin up.*
+> 🗣️ **What to say:**
+> *"To start, the entire infrastructure including the Prometheus database runs cleanly inside Docker. This ensures anyone on any machine can spin up this CI framework instantly."*
 
 ### Step 2: Show the Code Change Logic
 Open `src/main/math_operations.py` in your editor. Add a random comment to the bottom of the file like `# Demo change`. Save it.
+> 🗣️ **What to say:**
+> *"Now, let's pretend I am a developer who just modified the `math_operations.py` file. I haven't touched anything else in the project."*
 
 ### Step 3: Run the Smart Selector Locally
 ```bash
 python src/main/smart_selector.py
 ```
-*Point out to the evaluator:*
-- **"Look how Flake8 and Bandit caught code quality issues without breaking the pipeline."**
-- **"Notice it ONLY SELECTED `test_math_operations.py`. It intelligently skipped the string operations tests because I didn't edit that file, saving huge amounts of compute time!"**
-- **"Notice it generated a beautiful HTML coverage report in the `coverage_html/` folder!"**
+> 🗣️ **What to say as the logs print out:**
+> *"Here is where the Smart Selector shines: First, it runs a Git Diff and detects only the math file changed. Next, it runs static code analysis—Flake8 for formatting and Bandit for security—without blocking the pipeline.*
+> 
+> *Most importantly, look here: it intelligently mapped my change to exactly ONE test file (`test_math_operations.py`). It completely skipped all of my string operation tests and pipeline tests, saving enormous amounts of compute time that would normally be wasted in a standard CI/CD pipeline."*
 
-### Step 4: Stop the Local Test
+### Step 4: Show the Coverage Output
+Open `coverage_html/index.html` in your web browser.
+> 🗣️ **What to say:**
+> *"Because my pipeline automates coverage tracking, I can instantly see a beautiful HTML report proving that 100% of the math code executed perfectly during this specialized test run."*
+
+### Step 5: Stop the Local Test
 Since `smart_selector.py` stays alive at the end to serve metrics, press **CTRL+C** in your terminal to stop it.
 
 ---
@@ -52,13 +60,13 @@ docker-compose -f infrastructure/docker/docker-compose.yml down
 ```
 
 ### Step 2: Boot up ONLY the Prometheus database
-We don't need the Docker smart-selector this time, we only need the database server.
 ```bash
 docker-compose -f infrastructure/docker/docker-compose.yml up prometheus -d
 ```
+> 🗣️ **What to say:**
+> *"Now I want to show you the observability stack into our DevOps pipeline. To demonstrate how this handles enterprise-scale traffic, I'm going to start up an endless CI traffic generator..."*
 
 ### Step 3: Start your high-traffic traffic generator
-This script fakes a massive CI/CD workload by continuously executing fake tests and outputting real metrics to port 8000.
 ```bash
 python src/main/demo_mode.py
 ```
@@ -66,25 +74,20 @@ python src/main/demo_mode.py
 ### Step 4: Show the Graphs!
 Open your web browser and go to `http://localhost:9090`. Click **Graph** at the top.
 
-Paste these queries one-by-one into the search bar, click **Execute**, and watch the lines move live!
+> 🗣️ **What to say while opening Prometheus:**
+> *"All of my CI scripts have a built-in HTTP metrics server natively reporting to Prometheus. Let's look at the live dashboards."*
 
-**Query 1 (Total Tests Executed):**
-```text
-smart_tests_run_total
-```
-*(Shows a steadily climbing line representing a busy DevOps pipeline).*
+Paste these queries one-by-one into the search bar, click **Execute**, and watch the lines move live:
 
-**Query 2 (Changed Files Load):**
-```text
-smart_files_changed_current
-```
-*(Shows a jagged, heartbeat-style line showing the size of each commit hitting the servers).*
+**Query 1: smart_tests_run_total**
+> 🗣️ *"Here is our total execution rate—you can see the DevOps pipeline actively processing hundreds of tests in real time."*
 
-**Query 3 (Pipeline Throughput Speed):**
-```text
-rate(smart_tests_run_total[1m])
-```
-*(Calculates the exact speed/velocity of how many tests your infrastructure is processing per minute).*
+**Query 2: smart_files_changed_current**
+> 🗣️ *"Here we can monitor the complexity of each commit hitting the server, showing the variability of our developer workloads."*
+
+**Query 3: rate(smart_tests_run_total[1m])**
+> *(Click execute and let the line draw)* 
+> 🗣️ *"And finally, using PromQL, I can query the exact speed and velocity of the testing throughput, measuring exactly how many tests our infrastructure resolves per minute."*
 
 ---
 
@@ -93,3 +96,50 @@ When your presentation is over, go back to your terminal, press **CTRL+C** to st
 ```bash
 docker-compose -f infrastructure/docker/docker-compose.yml down
 ```
+
+Opening (30 seconds)
+"Good afternoon, Professor. My project is a Smart Test Selector that solves a critical DevOps problem: wasted CI/CD time. In large codebases, running all tests for every small change is inefficient. My solution intelligently runs only the tests related to what changed, reducing pipeline time by up to 75%."
+
+Problem Statement (1 minute)
+"Consider a codebase with 1000 tests. If I change one function in math_operations.py, do I really need to run all 1000 tests? No. I only need to run test_math_operations.py. But manually tracking this is error-prone. My tool automates this using Git integration to detect changes and intelligent file mapping to select relevant tests."
+
+Technical Architecture (2-3 minutes)
+Walk through the workflow sequence diagram and explain:
+
+Change Detection
+
+"First, I use git diff to detect which files changed between commits"
+
+"This works with environment variables BASE_COMMIT and CURRENT_COMMIT for CI/CD integration"
+
+Smart Mapping Algorithm
+
+"My map_src_to_test() function uses a naming convention:"
+
+"src/main/foo.py → src/test/test_foo.py"
+
+"It handles edge cases: test files themselves, non-Python files, missing tests"
+
+Quality Gates (Static Analysis)
+
+"Before running tests, I run Flake8 for code style and Bandit for security vulnerabilities"
+
+"These are non-blocking - they warn but don't stop execution"
+
+Test Execution
+
+"Only the mapped test files run through pytest with coverage reporting"
+
+"Generates machine-readable outputs: coverage.xml, test-results.xml for CI/CD tools"
+
+Observability
+
+"I expose 6 Prometheus metrics at :8000/metrics for monitoring"
+
+"This allows tracking test execution trends over time"
+
+Containerization
+
+"Everything runs in Docker containers orchestrated by Docker Compose"
+
+"Two services: the test selector and Prometheus for metrics scraping"
