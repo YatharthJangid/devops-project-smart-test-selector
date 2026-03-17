@@ -1,0 +1,30 @@
+services:
+  # Smart Selector Demo — continuously streams CI/CD metrics
+  - type: web
+    name: smart-selector-demo
+    runtime: docker
+    dockerfilePath: ./Dockerfile.demo
+    plan: free
+    envVars:
+      - key: PYTHONUNBUFFERED
+        value: "1"
+      - key: METRICS_PORT
+        value: "8000"
+
+  # Prometheus — scrapes the demo metrics server
+  - type: web
+    name: prometheus-server
+    runtime: docker
+    dockerCommand: >
+      /bin/prometheus
+      --config.file=/etc/prometheus/prometheus.yml
+      --storage.tsdb.path=/prometheus
+      --web.enable-lifecycle
+    image:
+      url: docker.io/prom/prometheus:latest
+    plan: free
+    envVars: []
+    disk:
+      name: prometheus-data
+      mountPath: /prometheus
+      sizeGB: 1

@@ -1,0 +1,20 @@
+# Demo mode Dockerfile — for cloud deployment (Render.com)
+# Runs demo_mode.py which continuously streams fake CI/CD metrics to Prometheus
+FROM python:3.10-slim
+
+WORKDIR /app
+
+# Copy requirements and install dependencies
+COPY requirements.txt .
+RUN python -m pip install --no-cache-dir -r requirements.txt
+
+# Copy source code
+COPY . .
+
+# Expose metrics port
+EXPOSE 8000
+
+ENV PYTHONUNBUFFERED=1
+
+# Run the perpetual demo metrics server
+CMD ["python", "src/main/demo_mode.py"]

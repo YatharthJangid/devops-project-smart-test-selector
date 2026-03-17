@@ -6,10 +6,18 @@ scrape_configs:
     static_configs:
       - targets: ['localhost:9090']
 
+  # For local Docker Compose (smart-selector container)
   - job_name: 'smart-test-selector'
     static_configs:
       - targets: ['smart-selector:8000']
-  
-  - job_name: 'demo-mode'
+
+  # For local development (demo_mode.py running on host machine)
+  - job_name: 'demo-mode-local'
     static_configs:
       - targets: ['host.docker.internal:8000']
+
+  # For cloud deployment on Render.com — replace URL after first deploy
+  # - job_name: 'demo-mode-cloud'
+  #   static_configs:
+  #     - targets: ['smart-selector-demo.onrender.com:443']
+  #   scheme: https
