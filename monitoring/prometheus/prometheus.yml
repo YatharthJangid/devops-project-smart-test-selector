@@ -16,8 +16,7 @@ scrape_configs:
     static_configs:
       - targets: ['host.docker.internal:8000']
 
-  # For cloud deployment on Render.com — replace URL after first deploy
-  # - job_name: 'demo-mode-cloud'
-  #   static_configs:
-  #     - targets: ['smart-selector-demo.onrender.com:443']
-  #   scheme: https
+  # For cloud deployment on Render.com (Internal Private Network)
+  - job_name: 'render-cloud-internal'
+    static_configs:
+      - targets: ['smart-selector-demo:8000']
