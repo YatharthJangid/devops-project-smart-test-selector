@@ -1,5 +1,5 @@
 services:
-  # Smart Selector Demo — continuously streams CI/CD metrics
+  # Smart Selector Demo — continuously streams fake CI/CD metrics to Prometheus
   - type: web
     name: smart-selector-demo
     runtime: docker
@@ -11,16 +11,10 @@ services:
       - key: METRICS_PORT
         value: "8000"
 
-  # Prometheus — scrapes the demo metrics server
+  # Prometheus — monitoring UI pulling from the demo service
   - type: web
     name: prometheus-server
-    runtime: docker
-    dockerCommand: >
-      /bin/prometheus
-      --config.file=/etc/prometheus/prometheus.yml
-      --storage.tsdb.path=/prometheus
-      --web.enable-lifecycle
+    runtime: image
     image:
       url: docker.io/prom/prometheus:latest
     plan: free
-    envVars: []
