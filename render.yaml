@@ -24,7 +24,3 @@ services:
       url: docker.io/prom/prometheus:latest
     plan: free
     envVars: []
-    disk:
-      name: prometheus-data
-      mountPath: /prometheus
-      sizeGB: 1
