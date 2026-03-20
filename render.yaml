@@ -14,7 +14,6 @@ services:
   # Prometheus — monitoring UI pulling from the demo service
   - type: web
     name: prometheus-server
-    runtime: image
-    image:
-      url: docker.io/prom/prometheus:latest
+    runtime: docker
+    dockerfilePath: ./Dockerfile.prometheus
     plan: free

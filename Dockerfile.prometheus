@@ -1,0 +1,5 @@
+# Custom Prometheus Dockerfile for Render deployments
+FROM prom/prometheus:latest
+
+# Overwrite the default config with our custom configuration
+COPY monitoring/prometheus/prometheus.yml /etc/prometheus/prometheus.yml
