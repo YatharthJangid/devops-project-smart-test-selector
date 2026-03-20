@@ -11,7 +11,8 @@ LINT_ERRORS = Counter('smart_lint_errors_total', 'Total number of flake8 linting
 SECURITY_ISSUES = Counter('smart_security_issues_total', 'Total number of bandit security issues')
 
 def main():
-    port = 8000
+    import os
+    port = int(os.environ.get('PORT', 8000))
     print(f"Starting Prometheus Fake Demo Server on port {port}...")
     try:
         start_http_server(port)
