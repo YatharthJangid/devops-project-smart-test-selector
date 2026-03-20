@@ -1,5 +1,19 @@
-# Custom Prometheus Dockerfile for Render deployments
+# Custom Prometheus for Render.com cloud deployment
+# Config is written INLINE to eliminate any build context file path issues
 FROM prom/prometheus:latest
 
-# Overwrite the default config with our custom configuration
-COPY monitoring/prometheus/prometheus.yml /etc/prometheus/prometheus.yml
+# Write the prometheus config directly into the image
+RUN printf 'global:\n\
+  scrape_interval: 15s\n\
+scrape_configs:\n\
+  - job_name: prometheus\n\
+    static_configs:\n\
+      - targets: ['"'"'localhost:9090'"'"']\n\
+  - job_name: smart-selector-demo\n\
+    scheme: https\n\
+    metrics_path: /metrics\n\
+    static_configs:\n\
+      - targets: ['"'"'smart-selector-demo.onrender.com'"'"']\n\
+' > /etc/prometheus/prometheus.yml
+
+EXPOSE 9090
