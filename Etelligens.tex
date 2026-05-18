@@ -1,0 +1,133 @@
+\documentclass[10pt,a4paper]{article}
+
+\usepackage[margin=0.45in,top=0.4in,bottom=0.4in]{geometry}
+\usepackage[hidelinks]{hyperref}
+\usepackage{enumitem}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt}
+
+\newcommand{\ressection}[1]{%
+  \vspace{3pt}%
+  {\bfseries\normalsize #1}%
+  \vspace{1pt}\hrule\vspace{2pt}%
+}
+
+\setlist[itemize]{leftmargin=1.2em, itemsep=0pt, topsep=0pt, parsep=0pt, partopsep=0pt}
+
+\begin{document}
+
+% ─── HEADER ───────────────────────────────────────────────────────────────────
+\begin{center}
+{\Large \textbf{Yatharth Jangid}} \\[2pt]
++91-6367521642 \;|\;
+\href{mailto:jangidyatharth5@gmail.com}{jangidyatharth5@gmail.com} \;|\;
+Jaipur, Rajasthan, India \\[1pt]
+\href{https://github.com/YatharthJangid}{github.com/YatharthJangid} \;|\;
+\href{https://linkedin.com/in/yatharth-jangid}{linkedin.com/in/yatharth-jangid}
+\end{center}
+
+\vspace{1pt}\hrule\vspace{2pt}
+\begin{center}
+\small\textit{B.Tech CSE student specializing in Go-based backend systems, distributed infrastructure,
+and cloud-native development --- building production-grade, well-tested backend services,
+microservices, and AI-assisted development workflows with gRPC, Redis, Docker, REST APIs,
+and CI/CD automation.}
+\end{center}
+\vspace{2pt}
+
+% ─── EDUCATION ────────────────────────────────────────────────────────────────
+\ressection{Education}
+\textbf{Manipal University Jaipur} \hfill 2023 -- 2027 \\
+B.Tech.\ in Computer Science and Engineering \hfill CGPA: 8.78/10.0
+
+% ─── TECHNICAL SKILLS ─────────────────────────────────────────────────────────
+\ressection{Technical Skills}
+\begin{itemize}
+  \item \textbf{Languages:} Go (primary), Python, C++17, Java, C
+  \item \textbf{Backend \& APIs:} gRPC, Protocol Buffers, REST APIs, Gin, JWT Authentication,
+        Microservices, Distributed Systems, Goroutines, Channels, Concurrency Patterns
+  \item \textbf{Databases \& Messaging:} Redis, MongoDB, MySQL, SQLite
+  \item \textbf{DevOps \& Cloud:} Docker, Git, GitHub Actions, CI/CD Pipelines, AWS, GCP, Linux, Bash, Version Control
+  \item \textbf{AI \& LLM Tools:} GenAI, OpenAI API, prompt engineering, tool calling, AI-assisted testing, Vertex AI
+  \item \textbf{Testing \& Quality:} Unit Testing, Integration Testing, AI-assisted testing, Benchmarking,
+        Race Condition Detection, Code Coverage; 260+ DSA problems (162 LeetCode, 98 GFG)
+  \item \textbf{Core CS:} DSA, OOP, SOLID Principles, DBMS, Operating Systems, Computer Networks
+\end{itemize}
+
+% ─── PROJECTS ─────────────────────────────────────────────────────────────────
+% ─── PROJECTS ─────────────────────────────────────────────────────────────────
+\ressection{Projects}
+
+\textbf{Golang JWT Authentication Service} \hfill 2026 \hfill
+\href{https://github.com/YatharthJangid/Golang-JWT-Gin-Authentication-project}%
+     {\small github.com/YatharthJangid/Golang-JWT-Gin-Authentication-project} \\
+\textit{Go, Gin, JWT, REST API, Middleware}
+\begin{itemize}
+  \item Built and deployed a secure backend REST authentication service in Go using Gin with JWT-based
+        token issuance, validation middleware, and protected route handling supporting
+        50+ concurrent authenticated requests during stress testing.
+  \item Designed modular request-handling layers following clean architecture principles,
+        reducing code duplication by 35\% and improving maintainability across auth workflows.
+  \item Containerized backend services using Docker, decreasing local environment setup
+        time from 20 minutes to under 6 minutes for reproducible deployments.
+\end{itemize}
+
+\textbf{High-Performance Distributed Job Queue} \hfill Nov 2025 \hfill
+\href{https://github.com/YatharthJangid/go-distributed-job-queue}%
+     {\small github.com/YatharthJangid/go-distributed-job-queue} \\
+\textit{Go, Redis, Goroutines, Channels, Concurrency}
+\begin{itemize}
+  \item Engineered and deployed a distributed job queue in Go with concurrent worker pools,
+        priority scheduling, and Redis-backed persistence; achieved 10x higher
+        throughput and processed 100,000+ jobs with sub-microsecond average latency.
+  \item Validated system reliability with 17 unit and integration tests achieving
+        77.3\% coverage and 845\,ns/job average latency; eliminated race conditions
+        using Go's race detector and concurrency-safe worker coordination.
+\end{itemize}
+
+\textbf{gRPC Microservice with Full-Duplex Streaming} \hfill 2025 \hfill
+\href{https://github.com/YatharthJangid/grpc_demo}%
+     {\small github.com/YatharthJangid/grpc\_demo} \\
+\textit{Go, gRPC, Protocol Buffers, GitHub Actions}
+\begin{itemize}
+  \item Implemented all four gRPC communication patterns in Go using Protocol Buffers,
+        enabling bi-directional low-latency communication with 60\% lower payload size
+        compared to equivalent REST-based JSON transfers.
+  \item Configured a GitHub Actions CI pipeline with automated test execution on every
+        push, reducing manual verification effort by 80\% and ensuring consistent build reliability.
+\end{itemize}
+
+\textbf{Smart Test Selector} \hfill Mar 2026 \hfill
+\href{https://github.com/YatharthJangid/devops-project-smart-test-selector}%
+     {\small github.com/YatharthJangid/devops-project-smart-test-selector} \\
+\textit{GitHub Actions, CI/CD, DevOps Automation}
+\begin{itemize}
+  \item Built and deployed a GitHub Actions-based CI tool to intelligently execute only impacted test suites,
+        reducing pipeline runtime by 65\% and accelerating developer feedback cycles for
+        AI-assisted testing workflows.
+  \item Designed rule-based dependency mapping logic for multi-module repositories,
+        minimizing unnecessary test execution and improving CI resource utilization efficiency.
+\end{itemize}
+
+% ─── CERTIFICATIONS ───────────────────────────────────────────────────────────
+\ressection{Certifications}
+\textbf{AWS:} Academy Graduate -- Cloud Foundations (2025); Educate -- GenAI (2025);
+  Cloud Security Foundations (2026) \;|\;
+\textbf{Red Hat:} System Administration I RH124; II RH134 \\
+\textbf{Google Cloud:} Cloud Functions, Cloud Storage, Pub/Sub, API Gateway, Compute Engine,
+  Monitoring, Vertex AI -- Skill Badges (2025) \\
+\textbf{NPTEL:} DSA using Java (Elite, 2025); Design and Analysis of Algorithms (Elite, 2025)
+  \;|\; \textbf{GeeksforGeeks:} OOP using Java (2024) \\
+\textbf{Oracle Academy:} Database Foundations, Design, Programming with SQL -- Course \& Final Exam Completion
+
+% ─── LEADERSHIP ───────────────────────────────────────────────────────────────
+\ressection{Leadership and Achievements}
+Event Coordinator, Onieros Annual Fest, MUJ (2024) \;|\;
+Content Creator, IEEE Student Branch, MUJ (2024) \\
+National Rank 56 in National Cyber Olympiad among 500,000+ participants \;|\;
+State-Level Badminton Player \;|\; NCC Certificate Level A
+
+\end{document}

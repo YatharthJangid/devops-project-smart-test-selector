@@ -4,6 +4,11 @@ import sys
 import time
 from prometheus_client import start_http_server, Counter, Gauge
 
+try:
+    from .ai_api import generate_text, OpenAIAPIError
+except ImportError:
+    from ai_api import generate_text, OpenAIAPIError
+
 # Prometheus Metrics
 TESTS_RUN = Counter('smart_tests_run_total', 'Total number of tests executed')
 TESTS_PASSED = Counter('smart_tests_passed_total', 'Total number of tests passed')
@@ -11,6 +16,36 @@ TESTS_FAILED = Counter('smart_tests_failed_total', 'Total number of tests failed
 FILES_CHANGED = Gauge('smart_files_changed_current', 'Number of files detected as changed')
 LINT_ERRORS = Counter('smart_lint_errors_total', 'Total number of flake8 linting errors')
 SECURITY_ISSUES = Counter('smart_security_issues_total', 'Total number of bandit security issues')
+
+AI_SUMMARY_ENV = 'SMART_SELECTOR_AI_SUMMARY'
+
+
+def maybe_print_ai_summary(changed_files, test_files, final_exit_code):
+    if os.environ.get(AI_SUMMARY_ENV) != '1':
+        return
+
+    changed_block = '\n'.join(changed_files) if changed_files else 'None'
+    tests_block = '\n'.join(test_files) if test_files else 'None'
+    outcome = 'passed' if final_exit_code == 0 else 'failed'
+
+    prompt = (
+        f"Changed files:\n{changed_block}\n\n"
+        f"Selected tests:\n{tests_block}\n\n"
+        f"Pipeline result: {outcome}"
+    )
+    instructions = (
+        "You are a concise DevOps assistant. Summarize the test selection in "
+        "one short paragraph and keep it practical."
+    )
+
+    try:
+        summary = generate_text(prompt, instructions=instructions)
+    except OpenAIAPIError as exc:
+        print(f"AI summary unavailable: {exc}")
+        return
+
+    print("\n--- AI Summary ---")
+    print(summary)
 
 
 def get_changed_files(base_commit, current_commit):
@@ -88,6 +123,7 @@ def main():
     base_commit = os.environ.get('BASE_COMMIT', '')
     current_commit = os.environ.get('CURRENT_COMMIT', '')
     final_exit_code = 0  # Default: success
+    test_files = []
     
     print("--- Let the Fancy Testing Begin ---")
     changed_files = get_changed_files(base_commit, current_commit)
@@ -141,6 +177,7 @@ def main():
         while True:
             time.sleep(60)
     else:
+        maybe_print_ai_summary(valid_changes, test_files, final_exit_code)
         sys.exit(final_exit_code)
 
 

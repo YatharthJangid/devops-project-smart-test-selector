@@ -2,7 +2,6 @@ import unittest
 from unittest.mock import patch, MagicMock
 import os
 import subprocess
-import sys
 
 # Import the module to test
 from src.main import smart_selector
@@ -135,6 +134,22 @@ class TestSmartSelector(unittest.TestCase):
         smart_selector.main()
 
         mock_exit.assert_called_once_with(0)
+
+    @patch.dict(os.environ, {'SMART_SELECTOR_AI_SUMMARY': '1', 'DAEMON_MODE': '0'}, clear=False)
+    @patch('src.main.smart_selector.generate_text')
+    @patch('builtins.print')
+    def test_maybe_print_ai_summary_enabled(self, mock_print, mock_generate_text):
+        mock_generate_text.return_value = 'AI summary text'
+
+        smart_selector.maybe_print_ai_summary(
+            ['src/main/foo.py'],
+            ['src/test/test_foo.py'],
+            0,
+        )
+
+        mock_generate_text.assert_called_once()
+        mock_print.assert_any_call('\n--- AI Summary ---')
+        mock_print.assert_any_call('AI summary text')
 
 if __name__ == '__main__':
     unittest.main()
